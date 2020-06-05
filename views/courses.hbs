@@ -1,0 +1,46 @@
+<h1>Courses</h1>
+
+<div id="course">
+  {{#if courses.length}}
+  {{#each courses}}
+    <div class="card">
+      <div class="card-image">
+        <img src="{{img}}" alt="{{title}}">
+      </div>
+      <div class="card-content">
+        <span class="card-title">{{title}}</span>
+        <p class="price">{{price}}</p>
+      </div>
+      <div class="card-action actions">
+        <a href="/courses/{{id}}" target="_blank">Открыть курс</a>
+
+        {{!-- скроем кнопки, которые не видны авторизованым пользователям --}}
+        {{!--isAuth находится на корневом уровне, а не внутри цикла each 
+        - используем @root  --}}
+        {{#if @root.isAuth}}
+
+          {{!-- будем убирать кнопку редактировать для пользователей,
+          которые не создавали курс --}}
+          {{#ifEquals userId._id @root.userId}}
+            <a href="/courses/{{id}}/edit?allow=true">Редактировать</a>
+          {{/ifEquals}}
+
+
+          <form action="/card/add" method="POST">
+
+              {{!-- добавим новый инпут для защиты, плюс дописать
+              @root, чтобы выйти из each --}}
+            <input type="hidden" name="_csrf" value="{{@root.csrf}}">
+
+            <input type="hidden" name="id" value="{{id}}">
+            <button type="submit" class="btn btn-primary">Купить</button>
+          </form>
+        {{/if}}
+
+      </div>
+    </div>
+  {{/each}}
+  {{else}}
+    <p>Курсов пока нет</p>
+  {{/if}}
+</div>

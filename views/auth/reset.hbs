@@ -1,0 +1,26 @@
+{{!-- создание формы восстановления пароля --}}
+<div class="row">
+  <div class="col s6 offset-s3">
+
+    {{!-- проверка на существующий email --}}
+    {{#if error}}
+      <p class="alert">{{error}}</p>
+    {{/if}}
+
+    <h3>Забыли пароль?</h3>
+    <form action="/auth/reset" method="POST">
+      <div class="input-field">
+        <input id="email" name="email" type="email" class="validate" required>
+        <label for="email">Email</label>
+        <span class="helper-text" data-error="Введите email"></span>
+      </div>
+
+         {{!-- добавим новый инпут для защиты --}}
+      <input type="hidden" name="_csrf" value="{{csrf}}">
+          {{!-- _csrf - на данное название будет смотреть middleware
+          и автоматически делать все за нас --}}
+
+      <button class="btn btn-primary" type="submit">Сбросить</button>
+    </form>
+  </div>
+</div>
